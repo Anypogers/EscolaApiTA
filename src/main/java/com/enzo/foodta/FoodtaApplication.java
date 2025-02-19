@@ -1,13 +1,11 @@
-package br.com.EscolaApiTA;
+package com.enzo.foodta;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class EscolaApiTaApplication {
-
+public class FoodtaApplication {
 	public static void main(String[] args) {
-		SpringApplication.run(EscolaApiTaApplication.class, args);
+    SpringApplication.run(FoodtaApplication.class, args);
 	}
-
 }

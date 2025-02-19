@@ -1,10 +1,10 @@
-package com.br.EscolaApiTA;
+package com.enzo.foodta;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class EscolaApiTaApplicationTests {
+class FoodtaApplicationTests {
 
 	@Test
 	void contextLoads() {
