@@ -24,3 +24,26 @@ spring.jpa.generate-ddl=true
 # re-creates the database everytime the code is run.
 spring.jpa.hibernate.ddl-auto=create
 ```
+
+___
+
+## Lombok
+
+- @Data
+  - @Getter
+  - @Setter
+  - @EqualsAndHashCode
+    - [ (onlyExplicitlyIncluded = true|false) ]
+    - [ .Include ]
+
+___
+
+## pom.xml
+```xml
+<dependency>
+  <groupId>org.projectlombok</groupId>
+  <artifactId>lombok</artifactId>
+  <optional>true</optional>
+</dependency>
+
+```
