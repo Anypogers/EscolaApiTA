@@ -13,9 +13,7 @@ public class Cidade {
   @EqualsAndHashCode.Include
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-
   private String nome;
-
   @ManyToOne
   @JoinColumn(name = "estado_id")
   private Estado estado;

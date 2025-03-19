@@ -38,6 +38,58 @@ ___
 
 ___
 
+## Repository
+```java
+package com.joe.codebase.domain.repository;
+
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface FooRepository {
+  
+}
+```
+
+## Repository Impl
+```java
+package com.joe.codebase.infrastructure.repository;
+
+import com.joe.codebase.domain.repository.CozinhaRepository;
+
+public class FooRepositoryImpl implements FooRepository {
+}
+```
+
+___
+
+## Controller
+
+```java
+package com.enzo.foodta.api.controller;
+
+import com.joe.codebase.domain.model.Foo;
+import com.enzo.foodta.domain.repository.FooRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/Foos")
+public class FooController {
+  @Autowired
+  private FooRepository fooRepository;
+  @GetMapping
+  public List<Cozinha> listar() {
+    return fooRepository.listar();
+  }
+}
+```
+
+___
+
 ## pom.xml
 ```xml
 <dependency>
