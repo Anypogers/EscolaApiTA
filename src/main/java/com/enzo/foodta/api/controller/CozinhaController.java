@@ -2,12 +2,11 @@ package com.enzo.foodta.api.controller;
 
 import com.enzo.foodta.domain.model.Cozinha;
 import com.enzo.foodta.domain.repository.CozinhaRepository;
+import com.enzo.foodta.domain.service.CozinhaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,6 +15,9 @@ import java.util.List;
 public class CozinhaController {
   @Autowired
   private CozinhaRepository cozinhaRepository;
+
+  @Autowired
+  private CozinhaService cozinhaService;
   @GetMapping
   public List<Cozinha> listar() {
     return cozinhaRepository.listar();
@@ -27,7 +29,12 @@ public class CozinhaController {
     if (cozinha != null) {
       return ResponseEntity.ok(cozinha);
     }
-
     return ResponseEntity.notFound().build();
+  }
+
+  @PostMapping
+  @ResponseStatus(HttpStatus.CREATED)
+  public Cozinha adicionar(@RequestBody Cozinha cozinha) {
+    return cozinhaService.salvar(cozinha);
   }
 }
