@@ -11,7 +11,6 @@ import java.util.List;
 
 @Component
 public class CidadeRepositoryImpl implements CidadeRepository {
-
   @PersistenceContext
   private EntityManager manager;
   @Override
