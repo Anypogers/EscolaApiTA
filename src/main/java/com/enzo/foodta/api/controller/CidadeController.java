@@ -3,6 +3,7 @@ package com.enzo.foodta.api.controller;
 import com.enzo.foodta.domain.model.Cidade;
 import com.enzo.foodta.domain.repository.CidadeRepository;
 import com.enzo.foodta.domain.service.CidadeService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,5 +38,20 @@ public class CidadeController {
   @ResponseStatus(HttpStatus.CREATED)
   public Cidade adicionar(@RequestBody Cidade cidade) {
     return cidadeService.salvar(cidade);
+  }
+
+  @PutMapping("/{cidadeId}")
+  public ResponseEntity<Cidade> atualizar(@PathVariable Long cidadeId, @RequestBody Cidade cidade){
+    Cidade cidadeAtual = cidadeRepository.buscar(cidadeId);
+
+    if (cidadeAtual == null) {
+      return ResponseEntity.notFound().build();
+    }
+
+    BeanUtils.copyProperties(cidade, cidadeAtual, "id");
+
+    cidadeAtual = cidadeService.salvar(cidadeAtual);
+
+    return ResponseEntity.ok(cidadeAtual);
   }
 }

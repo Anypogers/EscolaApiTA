@@ -3,6 +3,7 @@ package com.enzo.foodta.api.controller;
 import com.enzo.foodta.domain.model.Restaurante;
 import com.enzo.foodta.domain.repository.RestauranteRepository;
 import com.enzo.foodta.domain.service.RestauranteService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,5 +38,20 @@ public class RestauranteController {
   @ResponseStatus(HttpStatus.CREATED)
   public Restaurante adicionar(@RequestBody Restaurante restaurante) {
     return restauranteService.salvar(restaurante);
+  }
+
+  @PutMapping("/{restauranteId}")
+  public ResponseEntity<Restaurante> atualizar(@PathVariable Long restauranteId, @RequestBody Restaurante restaurante) {
+    Restaurante restauranteAtual = restauranteRepository.buscar(restauranteId);
+
+    if (restauranteAtual == null) {
+      return ResponseEntity.notFound().build();
+    }
+
+    BeanUtils.copyProperties(restaurante, restauranteAtual, "id");
+
+    restauranteAtual = restauranteService.salvar(restauranteAtual);
+
+    return ResponseEntity.ok(restauranteAtual);
   }
 }

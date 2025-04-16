@@ -3,6 +3,7 @@ package com.enzo.foodta.api.controller;
 import com.enzo.foodta.domain.model.FormaPagamento;
 import com.enzo.foodta.domain.repository.FormaPagamentoRepository;
 import com.enzo.foodta.domain.service.FormaPagamentoService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,5 +38,20 @@ public class FormaPagamentoController {
   @ResponseStatus(HttpStatus.CREATED)
   public FormaPagamento adicionar(@RequestBody FormaPagamento formaPagamento) {
     return formaPagamentoService.salvar(formaPagamento);
+  }
+
+  @PutMapping("/{formaPagamentoId}")
+  public ResponseEntity<FormaPagamento> atualizar(@PathVariable Long formaPagamentoId, @RequestBody FormaPagamento formaPagamento) {
+    FormaPagamento formaPagamentoAtual = formaPagamentoRepository.buscar(formaPagamentoId);
+
+    if (formaPagamentoAtual == null) {
+      return ResponseEntity.notFound().build();
+    }
+
+    BeanUtils.copyProperties(formaPagamento, formaPagamentoAtual, "id");
+
+    formaPagamentoAtual = formaPagamentoService.salvar(formaPagamentoAtual);
+
+    return ResponseEntity.ok(formaPagamentoAtual);
   }
 }
