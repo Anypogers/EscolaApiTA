@@ -1,5 +1,7 @@
 package com.enzo.foodta.api.controller;
 
+import com.enzo.foodta.domain.exception.EntidadeEmUsoException;
+import com.enzo.foodta.domain.exception.EntidadeNaoEncontradaException;
 import com.enzo.foodta.domain.model.Cidade;
 import com.enzo.foodta.domain.repository.CidadeRepository;
 import com.enzo.foodta.domain.service.CidadeService;
@@ -53,5 +55,17 @@ public class CidadeController {
     cidadeAtual = cidadeService.salvar(cidadeAtual);
 
     return ResponseEntity.ok(cidadeAtual);
+  }
+
+  @DeleteMapping("/{cidadeId}")
+  public ResponseEntity<Cidade> remover(@PathVariable Long cidadeId) {
+    try {
+      cidadeService.excluir(cidadeId);
+      return ResponseEntity.notFound().build();
+    } catch (EntidadeNaoEncontradaException e) {
+      return ResponseEntity.notFound().build();
+    } catch (EntidadeEmUsoException e) {
+      return ResponseEntity.status(HttpStatus.CONFLICT).build();
+    }
   }
 }

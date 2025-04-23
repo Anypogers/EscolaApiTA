@@ -4,6 +4,7 @@ import com.enzo.foodta.domain.model.Restaurante;
 import com.enzo.foodta.domain.repository.RestauranteRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +34,11 @@ public class RestauranteRepositoryImpl implements RestauranteRepository {
   @Override
   public void remover(Long id) {
     Restaurante restaurante = buscar(id);
+
+    if (restaurante == null) {
+      throw new EmptyResultDataAccessException(1);
+    }
+
     manager.remove(restaurante);
   }
 }

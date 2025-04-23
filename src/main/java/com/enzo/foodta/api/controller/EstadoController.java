@@ -1,5 +1,7 @@
 package com.enzo.foodta.api.controller;
 
+import com.enzo.foodta.domain.exception.EntidadeEmUsoException;
+import com.enzo.foodta.domain.exception.EntidadeNaoEncontradaException;
 import com.enzo.foodta.domain.model.Estado;
 import com.enzo.foodta.domain.repository.EstadoRepository;
 import com.enzo.foodta.domain.service.EstadoService;
@@ -53,5 +55,17 @@ public class EstadoController {
     estadoAtual = estadoService.salvar(estadoAtual);
 
     return ResponseEntity.ok(estadoAtual);
+  }
+
+  @DeleteMapping("/{estadoId}")
+  public ResponseEntity<Estado> remover(@PathVariable Long estadoId) {
+    try {
+      estadoService.excluir(estadoId);
+      return ResponseEntity.notFound().build();
+    } catch (EntidadeNaoEncontradaException e) {
+      return ResponseEntity.notFound().build();
+    } catch (EntidadeEmUsoException e) {
+      return ResponseEntity.status(HttpStatus.CONFLICT).build();
+    }
   }
 }

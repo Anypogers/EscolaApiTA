@@ -1,5 +1,7 @@
 package com.enzo.foodta.api.controller;
 
+import com.enzo.foodta.domain.exception.EntidadeEmUsoException;
+import com.enzo.foodta.domain.exception.EntidadeNaoEncontradaException;
 import com.enzo.foodta.domain.model.Restaurante;
 import com.enzo.foodta.domain.repository.RestauranteRepository;
 import com.enzo.foodta.domain.service.RestauranteService;
@@ -53,5 +55,17 @@ public class RestauranteController {
     restauranteAtual = restauranteService.salvar(restauranteAtual);
 
     return ResponseEntity.ok(restauranteAtual);
+  }
+
+  @DeleteMapping("/{restauranteId}")
+  public ResponseEntity<Restaurante> remover(@PathVariable Long restauranteId) {
+    try {
+      restauranteService.excluir(restauranteId);
+      return ResponseEntity.notFound().build();
+    } catch (EntidadeNaoEncontradaException e) {
+      return ResponseEntity.notFound().build();
+    } catch (EntidadeEmUsoException e) {
+      return ResponseEntity.status(HttpStatus.CONFLICT).build();
+    }
   }
 }

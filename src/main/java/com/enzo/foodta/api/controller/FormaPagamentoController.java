@@ -1,5 +1,7 @@
 package com.enzo.foodta.api.controller;
 
+import com.enzo.foodta.domain.exception.EntidadeEmUsoException;
+import com.enzo.foodta.domain.exception.EntidadeNaoEncontradaException;
 import com.enzo.foodta.domain.model.FormaPagamento;
 import com.enzo.foodta.domain.repository.FormaPagamentoRepository;
 import com.enzo.foodta.domain.service.FormaPagamentoService;
@@ -53,5 +55,17 @@ public class FormaPagamentoController {
     formaPagamentoAtual = formaPagamentoService.salvar(formaPagamentoAtual);
 
     return ResponseEntity.ok(formaPagamentoAtual);
+  }
+
+  @DeleteMapping("/{formaPagamentoId}")
+  public ResponseEntity<FormaPagamento> remover(@PathVariable Long formaPagamentoId) {
+    try {
+      formaPagamentoService.excluir(formaPagamentoId);
+      return ResponseEntity.notFound().build();
+    } catch (EntidadeNaoEncontradaException e) {
+      return ResponseEntity.notFound().build();
+    } catch (EntidadeEmUsoException e) {
+      return ResponseEntity.status(HttpStatus.CONFLICT).build();
+    }
   }
 }
