@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/formasPagamento")
@@ -24,14 +25,14 @@ public class FormaPagamentoController {
 
   @GetMapping
   public List<FormaPagamento> listar() {
-    return formaPagamentoRepository.listar();
+    return formaPagamentoRepository.findAll();
   }
 
   @GetMapping("/{formaPagamentoId}")
   public ResponseEntity<FormaPagamento> buscar(@PathVariable Long formaPagamentoId){
-    FormaPagamento formaPagamento = formaPagamentoRepository.buscar(formaPagamentoId);
-    if (formaPagamento != null) {
-      return ResponseEntity.ok(formaPagamento);
+    Optional<FormaPagamento> formaPagamento = formaPagamentoRepository.findById(formaPagamentoId);
+    if (formaPagamento.isPresent()) {
+      return ResponseEntity.ok(formaPagamento.get());
     }
     return ResponseEntity.notFound().build();
   }
@@ -44,17 +45,13 @@ public class FormaPagamentoController {
 
   @PutMapping("/{formaPagamentoId}")
   public ResponseEntity<FormaPagamento> atualizar(@PathVariable Long formaPagamentoId, @RequestBody FormaPagamento formaPagamento) {
-    FormaPagamento formaPagamentoAtual = formaPagamentoRepository.buscar(formaPagamentoId);
-
-    if (formaPagamentoAtual == null) {
-      return ResponseEntity.notFound().build();
+    Optional<FormaPagamento> formaPagamentoAtual = formaPagamentoRepository.findById(formaPagamentoId);
+    if (formaPagamentoAtual.isPresent()) {
+      BeanUtils.copyProperties(formaPagamento, formaPagamentoAtual, "id");
+      FormaPagamento formaPagamentoSalva = formaPagamentoService.salvar(formaPagamentoAtual.get());
+      return ResponseEntity.ok(formaPagamentoSalva);
     }
-
-    BeanUtils.copyProperties(formaPagamento, formaPagamentoAtual, "id");
-
-    formaPagamentoAtual = formaPagamentoService.salvar(formaPagamentoAtual);
-
-    return ResponseEntity.ok(formaPagamentoAtual);
+    return ResponseEntity.notFound().build();
   }
 
   @DeleteMapping("/{formaPagamentoId}")

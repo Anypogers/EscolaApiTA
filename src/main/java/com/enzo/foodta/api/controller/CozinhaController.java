@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/cozinhas")
@@ -24,37 +25,33 @@ public class CozinhaController {
 
   @GetMapping
   public List<Cozinha> listar() {
-    return cozinhaRepository.listar();
+    return cozinhaRepository.findAll();
   }
 
   @GetMapping("/{cozinhaId}")
   public ResponseEntity<Cozinha> buscar(@PathVariable Long cozinhaId) {
-    Cozinha cozinha = cozinhaRepository.buscar(cozinhaId);
-    if (cozinha != null) {
-      return ResponseEntity.ok(cozinha);
+    Optional<Cozinha> cozinha = cozinhaRepository.findById(cozinhaId);
+    if (cozinha.isPresent()) {
+      return ResponseEntity.ok(cozinha.get());
     }
     return ResponseEntity.notFound().build();
   }
 
   @PostMapping
-  @ResponseStatus(HttpStatus.CREATED)
-  public Cozinha adicionar(@RequestBody Cozinha cozinha) {
-    return cozinhaService.salvar(cozinha);
+  public ResponseEntity<Cozinha> adicionar(@RequestBody Cozinha cozinha) {
+    cozinha = cozinhaService.salvar(cozinha);
+    return ResponseEntity.status(HttpStatus.CREATED).body(cozinha);
   }
 
   @PutMapping("/{cozinhaId}")
   public ResponseEntity<Cozinha> atualizar(@PathVariable Long cozinhaId, @RequestBody Cozinha cozinha) {
-    Cozinha cozinhaAtual = cozinhaRepository.buscar(cozinhaId);
-
-    if (cozinhaAtual == null) {
-      return ResponseEntity.notFound().build();
+    Optional<Cozinha> cozinhaAtual = cozinhaRepository.findById(cozinhaId);
+    if (cozinhaAtual.isPresent()) {
+      BeanUtils.copyProperties(cozinha, cozinhaAtual, "id");
+      Cozinha cozinhaSalva = cozinhaService.salvar(cozinhaAtual.get());
+      return ResponseEntity.ok(cozinhaSalva);
     }
-
-    BeanUtils.copyProperties(cozinha, cozinhaAtual, "id");
-
-    cozinhaAtual = cozinhaService.salvar(cozinhaAtual);
-
-    return ResponseEntity.ok(cozinhaAtual);
+    return ResponseEntity.notFound().build();
   }
 
   @DeleteMapping("/{cozinhaId}")

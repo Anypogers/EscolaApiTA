@@ -15,12 +15,12 @@ public class FormaPagamentoService {
   private FormaPagamentoRepository formaPagamentoRepository;
 
   public FormaPagamento salvar(FormaPagamento formaPagamento) {
-    return formaPagamentoRepository.salvar(formaPagamento);
+    return formaPagamentoRepository.save(formaPagamento);
   }
 
   public void excluir(Long id) {
     try {
-      formaPagamentoRepository.remover(id);
+      formaPagamentoRepository.deleteById(id);
     } catch (DataIntegrityViolationException e) {
       throw new EntidadeEmUsoException(String.format(
           "Forma pagamento ou código %d não pode ser removida, pois está em uso.", id
