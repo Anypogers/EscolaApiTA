@@ -23,6 +23,9 @@ spring.datasource.passowrd=
 spring.jpa.generate-ddl=true
 # re-creates the database everytime the code is run.
 spring.jpa.hibernate.ddl-auto=create
+
+# Shows the SQL generation on the terminal
+spring.jpa.show-sql=true
 ```
 
 ___
