@@ -3,4 +3,4 @@ CREATE TABLE tb_cozinha(
   nome_cozinha varchar(70),
 
   primary key(id)
-) engine=InnoDB default charset=utf8
+) engine=InnoDB default charset=utf8;
