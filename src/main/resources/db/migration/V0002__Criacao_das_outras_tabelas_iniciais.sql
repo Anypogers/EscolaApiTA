@@ -15,7 +15,7 @@ CREATE TABLE tb_cidade(
 
 CREATE TABLE tb_forma_pagamento(
   id bigint not null auto_increment,
-  DescricaoForma varchar(60),
+  descricao_forma varchar(60),
 
   primary key(id)
 ) engine=InnoDB default charset=utf8;

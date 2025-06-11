@@ -14,6 +14,6 @@ public class FormaPagamento {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(name = "DescricaoForma", length = 100)
+  @Column(name = "descricao_forma", length = 60)
   private String descricaoForma;
 }

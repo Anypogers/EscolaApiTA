@@ -7,9 +7,6 @@ import jakarta.persistence.ManyToOne;
 
 @Embeddable
 public class Endereco {
-  //================/
-  // This is stupid /
-  //================/
   @ManyToOne
   @JoinColumn(name = "endereco_cidade_id")
   private Cidade cidade;
